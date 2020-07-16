@@ -9,6 +9,7 @@ env:
   matrix:
     - TEST_GROUP=1
     - TEST_GROUP=2
+
 # jobs:
 #   include:
 #     - stage: Codestyle
@@ -16,18 +17,28 @@ env:
 #     - stage: Test Matrix
 #       script:
 #         - make matrix
-#         - echo $TEST_GROUP
+#         - echo $TEST_GROUmatrix:
+# - TEST_GROUP=1
+# - TEST_GROUP=2
 #     - stage: Deploy
 #       script: make deploy
 
-_shared_job: &shared_job
-  script:
-    - make matrix
-    - echo $TEST_GROUP
-  # ...
+# _shared_job: &shared_job
+#   script:
+#     - make matrix
+#     - echo $TEST_GROUP
+#   # ...
 jobs:
   include:
-    - name: Job 1
-      <<: *shared_job
-    - name: Job 2
-      <<: *shared_job
+    - stage: code
+      script: make code
+
+    - stage: matrix
+      matrix:
+        - TEST_GROUP=1
+        - TEST_GROUP=2
+      script:
+        - make matrix
+
+    - stage: deploy
+      script: make deploy
