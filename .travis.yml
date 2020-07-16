@@ -1,0 +1,33 @@
+language: python
+cache: pip
+python:
+  - "3.7"
+
+env:
+  global:
+    - TOTAL_GROUPS=2
+  matrix:
+    - TEST_GROUP=1
+    - TEST_GROUP=2
+# jobs:
+#   include:
+#     - stage: Codestyle
+#       script: make code
+#     - stage: Test Matrix
+#       script:
+#         - make matrix
+#         - echo $TEST_GROUP
+#     - stage: Deploy
+#       script: make deploy
+
+_shared_job: &shared_job
+  script:
+    - make matrix
+    - echo $TEST_GROUP
+  # ...
+jobs:
+  include:
+    - name: Job 1
+      <<: *shared_job
+    - name: Job 2
+      <<: *shared_job
